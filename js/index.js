@@ -71,7 +71,7 @@ async function stopAudioRecording() {
 
   try {
     const audioBlob = await audioRecorder.stop();
-    playAudio(audioBlob, false);
+    playAudio(audioBlob, true);
   } catch (error) {
     //Error handling structure
     switch (error.name) {
@@ -86,17 +86,6 @@ async function stopAudioRecording() {
 
 function playAudio(audioBlob, useSource) {
   if (useSource) {
-    setButtonText("Playing...");
-    const audioUrl = URL.createObjectURL(audioBlob);
-    const audio = new Audio(audioUrl);
-    audio.play();
-
-    audio.addEventListener("ended", () => {
-      console.log("Audio ended");
-      recordBtn.disabled = false;
-      setButtonText("Record");
-    });
-  } else {
     //read content of files (Blobs) asynchronously
     let reader = new FileReader();
 
@@ -133,9 +122,19 @@ function playAudio(audioBlob, useSource) {
         setButtonText("Record");
       });
     };
-
     //read content and convert it to a URL (base64)
     reader.readAsDataURL(audioBlob);
+  } else {
+    setButtonText("Playing...");
+    const audioUrl = URL.createObjectURL(audioBlob);
+    const audio = new Audio(audioUrl);
+    audio.play();
+
+    audio.addEventListener("ended", () => {
+      console.log("Audio ended");
+      recordBtn.disabled = false;
+      setButtonText("Record");
+    });
   }
 }
 
