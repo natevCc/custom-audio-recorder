@@ -1,7 +1,7 @@
-import AudioRecorder from "./audiorecorder.js";
+// import AudioRecorder from "./audiorecorder.js";
+import { audioRecorder } from "./audiorecorder.js";
 
 const recordBtn = document.getElementById("recordBtn");
-const audioRecorder = new AudioRecorder();
 const audioElement = document.getElementById("audioElement");
 let audioElementSource;
 
