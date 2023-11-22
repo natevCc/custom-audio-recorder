@@ -71,7 +71,7 @@ async function stopAudioRecording() {
 
   try {
     const audioBlob = await audioRecorder.stop();
-    playAudio(audioBlob, true);
+    playAudio(audioBlob, false);
   } catch (error) {
     //Error handling structure
     switch (error.name) {
