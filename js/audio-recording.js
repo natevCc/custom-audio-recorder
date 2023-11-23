@@ -36,6 +36,8 @@ var audioRecorder = {
           (event) => {
             //store audio Blob object
             audioRecorder.audioBlobs.push(event.data);
+            console.log("DATAAVAILABLE");
+            console.log(JSON.stringify(event.data, null, 2));
           }
         );
 
