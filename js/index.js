@@ -3,8 +3,16 @@
 const recordBtn = document.getElementById("recordBtn");
 const audioElement = document.getElementById("audioElement");
 let audioElementSource;
+let audioRecordStartTime;
 
 setButtonText("Record");
+audioElement.onended = handleAudioEnded;
+
+function handleAudioEnded() {
+  console.log("Audio ended");
+  recordBtn.disabled = false;
+  setButtonText("Record");
+}
 
 recordBtn.addEventListener("click", () => {
   recordBtn.disabled = true;
@@ -23,7 +31,7 @@ function startAudioRecording() {
     .then(() => {
       //on success
       //store the recording start time to display the elapsed time according to it
-      //  audioRecordStartTime = new Date();
+      audioRecordStartTime = new Date();
     })
     .catch((error) => {
       //on error
@@ -140,11 +148,11 @@ function playAudio(audioBlob, useSource) {
       console.log("Playing audio...");
       audioElement.play();
 
-      audioElement.addEventListener("ended", () => {
-        console.log("Audio ended");
-        recordBtn.disabled = false;
-        setButtonText("Record");
-      });
+      // audioElement.addEventListener("ended", () => {
+      //   console.log("Audio ended");
+      //   recordBtn.disabled = false;
+      //   setButtonText("Record");
+      // });
     };
     //read content and convert it to a URL (base64)
     reader.readAsDataURL(audioBlob);
