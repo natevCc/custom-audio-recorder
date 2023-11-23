@@ -1,5 +1,4 @@
 // import AudioRecorder from "./audiorecorder.js";
-import { audioRecorder } from "./audiorecorder.js";
 
 const recordBtn = document.getElementById("recordBtn");
 const audioElement = document.getElementById("audioElement");
