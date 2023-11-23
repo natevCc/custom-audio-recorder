@@ -40,8 +40,10 @@ var audioRecorder = {
             audioRecorder.audioBlobs.push(event.data);
             console.log("DATAAVAILABLE");
             console.log(JSON.stringify(event.data, null, 2));
-            console.log("EVENT: ");
-            console.log(JSON.stringify(event, null, 2));
+            // console.log("EVENT: ");
+            // console.log(JSON.stringify(event, null, 2));
+            console.log("Blob size: " + event.data.size);
+            console.log("Blob type: " + event.data.type);
           }
         );
 
