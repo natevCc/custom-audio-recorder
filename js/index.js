@@ -139,6 +139,7 @@ var elapsedTimeTimer;
 /** Starts the audio recording*/
 async function startAudioRecording() {
   console.log("Recording Audio...");
+  console.log("RECORDING STARTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
   //If a previous audio recording is playing, pause it
   let recorderAudioIsPlaying = !audioElement.paused; // the paused property tells whether the media element is paused or not
@@ -223,12 +224,16 @@ async function startAudioRecording() {
 function stopAudioRecording() {
   console.log("Stopping Audio Recording...");
 
+  console.log("AUDIO BLOB BEFORE STOP");
+  console.log(JSON.stringify(audioRecorder.audioBlobs, null, 2));
   //stop the recording using the audio recording API
   audioRecorder
     .stop()
     .then((audioAsblob) => {
       //Play recorder audio
       playAudio(audioAsblob);
+      console.log("AUDIO BLOB AFTER STOP");
+      console.log(JSON.stringify(audioAsblob, null, 2));
 
       //hide recording control button & return record icon
       handleHidingRecordingControlButtons();
