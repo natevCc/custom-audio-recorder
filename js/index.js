@@ -28,6 +28,8 @@ var textIndicatorOfAudiPlaying = document.getElementsByClassName(
   "text-indication-of-audio-playing"
 )[0];
 
+const audioSelect = document.getElementById("micSelect");
+
 //Listeners
 
 //Listen to start recording button
@@ -97,6 +99,32 @@ function hideTextIndicatorOfAudioPlaying() {
   textIndicatorOfAudiPlaying.classList.add("hide");
 }
 
+setupInputSelect();
+
+async function setupInputSelect() {
+  const deviceInfos = await navigator.mediaDevices.enumerateDevices();
+  audioSelect.innerHTML = "";
+  createMicOption("none", "Pick your microphone");
+  audioSelect.value = "none";
+
+  for (let i = 0; i !== deviceInfos.length; ++i) {
+    const deviceInfo = deviceInfos[i];
+    if (deviceInfo.kind === "audioinput") {
+      createMicOption(
+        deviceInfo.deviceId,
+        deviceInfo.label || `mic ${audioSelect.length + 1}`
+      );
+    }
+  }
+}
+
+function createMicOption(id, label) {
+  const option = document.createElement("option");
+  option.value = id;
+  option.text = label;
+  audioSelect.appendChild(option);
+}
+
 //Controller
 
 /** Stores the actual start time when an audio recording begins to take place to ensure elapsed time start time is accurate*/
@@ -121,11 +149,13 @@ async function startAudioRecording() {
     hideTextIndicatorOfAudioPlaying();
   }
 
-  // const constarints = {
-  //   audio: { deviceId: micSource ? { exact: micSource } : undefined },
-  // };
+  const constarints = {
+    audio: {
+      deviceId: audioSelect.value ? { exact: audioSelect.value } : undefined,
+    },
+  };
 
-  const constarints = { audio: true };
+  // const constarints = { audio: true };
   const stream = await navigator.mediaDevices.getUserMedia(constarints);
 
   audioRecorder.start(stream);
