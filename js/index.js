@@ -109,7 +109,7 @@ var maximumRecordingTimeInHours = 1;
 var elapsedTimeTimer;
 
 /** Starts the audio recording*/
-function startAudioRecording() {
+async function startAudioRecording() {
   console.log("Recording Audio...");
 
   //If a previous audio recording is playing, pause it
@@ -121,62 +121,72 @@ function startAudioRecording() {
     hideTextIndicatorOfAudioPlaying();
   }
 
-  //start recording using the audio recording API
-  audioRecorder
-    .start()
-    .then(() => {
-      //on success
+  // const constarints = {
+  //   audio: { deviceId: micSource ? { exact: micSource } : undefined },
+  // };
 
-      //store the recording start time to display the elapsed time according to it
-      audioRecordStartTime = new Date();
+  const constarints = { audio: true };
+  const stream = await navigator.mediaDevices.getUserMedia(constarints);
 
-      //display control buttons to offer the functionality of stop and cancel
-      handleDisplayingRecordingControlButtons();
-    })
-    .catch((error) => {
-      //on error
-      //No Browser Support Error
-      if (
-        error.message.includes(
-          "mediaDevices API or getUserMedia method is not supported in this browser."
-        )
-      ) {
-        console.log("To record audio, use browsers like Chrome and Firefox.");
-        displayBrowserNotSupportedOverlay();
-      }
+  audioRecorder.start(stream);
+  audioRecordStartTime = new Date();
+  handleDisplayingRecordingControlButtons();
+  // //start recording using the audio recording API
+  // audioRecorder
+  //   .start()
+  //   .then(() => {
+  //     //on success
 
-      //Error handling structure
-      switch (error.name) {
-        case "AbortError": //error from navigator.mediaDevices.getUserMedia
-          console.log("An AbortError has occured.");
-          break;
-        case "NotAllowedError": //error from navigator.mediaDevices.getUserMedia
-          console.log(
-            "A NotAllowedError has occured. User might have denied permission."
-          );
-          break;
-        case "NotFoundError": //error from navigator.mediaDevices.getUserMedia
-          console.log("A NotFoundError has occured.");
-          break;
-        case "NotReadableError": //error from navigator.mediaDevices.getUserMedia
-          console.log("A NotReadableError has occured.");
-          break;
-        case "SecurityError": //error from navigator.mediaDevices.getUserMedia or from the MediaRecorder.start
-          console.log("A SecurityError has occured.");
-          break;
-        case "TypeError": //error from navigator.mediaDevices.getUserMedia
-          console.log("A TypeError has occured.");
-          break;
-        case "InvalidStateError": //error from the MediaRecorder.start
-          console.log("An InvalidStateError has occured.");
-          break;
-        case "UnknownError": //error from the MediaRecorder.start
-          console.log("An UnknownError has occured.");
-          break;
-        default:
-          console.log("An error occured with the error name " + error.name);
-      }
-    });
+  //     //store the recording start time to display the elapsed time according to it
+  //     audioRecordStartTime = new Date();
+
+  //     //display control buttons to offer the functionality of stop and cancel
+  //     handleDisplayingRecordingControlButtons();
+  //   })
+  //   .catch((error) => {
+  //     //on error
+  //     //No Browser Support Error
+  //     if (
+  //       error.message.includes(
+  //         "mediaDevices API or getUserMedia method is not supported in this browser."
+  //       )
+  //     ) {
+  //       console.log("To record audio, use browsers like Chrome and Firefox.");
+  //       displayBrowserNotSupportedOverlay();
+  //     }
+
+  //     //Error handling structure
+  //     switch (error.name) {
+  //       case "AbortError": //error from navigator.mediaDevices.getUserMedia
+  //         console.log("An AbortError has occured.");
+  //         break;
+  //       case "NotAllowedError": //error from navigator.mediaDevices.getUserMedia
+  //         console.log(
+  //           "A NotAllowedError has occured. User might have denied permission."
+  //         );
+  //         break;
+  //       case "NotFoundError": //error from navigator.mediaDevices.getUserMedia
+  //         console.log("A NotFoundError has occured.");
+  //         break;
+  //       case "NotReadableError": //error from navigator.mediaDevices.getUserMedia
+  //         console.log("A NotReadableError has occured.");
+  //         break;
+  //       case "SecurityError": //error from navigator.mediaDevices.getUserMedia or from the MediaRecorder.start
+  //         console.log("A SecurityError has occured.");
+  //         break;
+  //       case "TypeError": //error from navigator.mediaDevices.getUserMedia
+  //         console.log("A TypeError has occured.");
+  //         break;
+  //       case "InvalidStateError": //error from the MediaRecorder.start
+  //         console.log("An InvalidStateError has occured.");
+  //         break;
+  //       case "UnknownError": //error from the MediaRecorder.start
+  //         console.log("An UnknownError has occured.");
+  //         break;
+  //       default:
+  //         console.log("An error occured with the error name " + error.name);
+  //     }
+  //   });
 }
 /** Stop the currently started audio recording & sends it
  */
