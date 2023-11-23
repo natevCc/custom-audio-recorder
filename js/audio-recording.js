@@ -12,6 +12,8 @@ var audioRecorder = {
    * @returns {Promise} - returns a promise that resolves if audio recording successfully started
    */
   start: function (mediaStream) {
+    console.log("RECORDING STARTED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
     //Feature Detection
     if (!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) {
       //Feature is not supported in browser
@@ -38,6 +40,8 @@ var audioRecorder = {
             audioRecorder.audioBlobs.push(event.data);
             console.log("DATAAVAILABLE");
             console.log(JSON.stringify(event.data, null, 2));
+            console.log("EVENT: ");
+            console.log(JSON.stringify(event, null, 2));
           }
         );
 
